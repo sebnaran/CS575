@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <math.h>
 
-#define NUMT	         4
-#define SIZE       	    100	// you decide
-#define NUMTRIES        100	// you decide
+//#define NUMT	         4
+#define SIZE       	    16384	// you decide
+#define NUMTRIES        200	// you decide
 
 float A[SIZE];
 float B[SIZE];
@@ -19,7 +19,7 @@ main( )
 #endif
 
 	// inialize the arrays:
-	for( int i = 0 i < SIZE; i++ )
+	for( int i = 0; i < SIZE; i++ )
 	{
 		A[ i ] = 1.;
 		B[ i ] = 2.;
@@ -29,7 +29,7 @@ main( )
         fprintf( stderr, "Using %d threads\n", NUMT );
 
         double maxMegaMults = 0.;
-
+        double AveMegaMults = 0.;
         for( int t = 0; t < NUMTRIES; t++ )
         {
                 double time0 = omp_get_wtime( );
@@ -42,12 +42,13 @@ main( )
 
                 double time1 = omp_get_wtime( );
                 double megaMults = (double)SIZE/(time1-time0)/1000000.;
+                AveMegaMults = AveMegaMults + megaMults;
                 if( megaMults > maxMegaMults )
                         maxMegaMults = megaMults;
         }
-
+        AveMegaMults = AveMegaMults/NUMTRIES;
         printf( "Peak Performance = %8.2lf MegaMults/Sec\n", maxMegaMults );
-
+        printf( "Average Performance = %8.2lf MegaMults/Sec\n", AveMegaMults );
 	// note: %lf stands for "long float", which is how printf prints a "double"
 	//        %d stands for "decimal integer", not "double"
 
