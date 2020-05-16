@@ -7,7 +7,6 @@
 
 // CUDA runtime
 #include <cuda_runtime.h>
-
 // Helper functions and utilities to work with CUDA
 #include "helper_functions.h"
 #include "helper_cuda.h"
@@ -69,7 +68,7 @@ __global__  void MonteCarlo( float *Xcs, float *Ycs, float *Rs, int *Hits )
 	//	if you used "continue;" in project #1, change to this style because,
 	//	if there is no for-loop, then there is nowhere to continue to
 //If d is less than 0., then the circle was completely missed. (Case A) Continue on to the next trial in the for-loop.
-	if( if d>=0 )
+	if( d>=0 )
 	{
 		d = sqrt( d );
 			float t1 = (-b + d ) / ( 2.*a );	// time to intersect the circle
@@ -219,8 +218,8 @@ main( int argc, char* argv[ ] )
 	double secondsTotal = 0.001 * (double)msecTotal;
 	double trialsPerSecond = (float)NUMTRIALS / secondsTotal;
 	double megaTrialsPerSecond = trialsPerSecond / 1000000.;
+	fprintf( stderr, "BLOCKSIZE = %10d\n", BLOCKSIZE );
 	fprintf( stderr, "Number of Trials = %10d, MegaTrials/Second = %10.4lf\n", NUMTRIALS, megaTrialsPerSecond );
-
 	// copy result from the device to the host:
 
 	status = cudaMemcpy( hHits, dHits, NUMTRIALS *sizeof(int), cudaMemcpyDeviceToHost );
